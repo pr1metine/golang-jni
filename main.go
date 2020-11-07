@@ -1,4 +1,5 @@
 // DO NOT REMOVE ANY COMMENTS
+// TODO: Refactor the hell out of this project
 package main
 
 //#include <jni.h>
@@ -12,6 +13,24 @@ package main
 //		return obj;
 //}
 //
+//static jboolean *allocBoolArray(JNIEnv *env, int size) {
+//		jbooleanArray res = (*env)->NewBooleanArray(env, size);
+//		return (*env)->GetBooleanArrayElements(env, res, NULL);
+//}
+//static jboolean *toGoArray(JNIEnv *env, jbooleanArray arr) {
+//		return (*env)->GetBooleanArrayElements(env, arr, NULL);
+//}
+//static jbooleanArray toJBooleanArray(JNIEnv *env, jboolean arr[], int size) {
+//		jbooleanArray res = (*env)->NewBooleanArray(env, size);
+//		(*env)->SetBooleanArrayRegion(env, res, 0, size, arr);
+//		return res;
+//}
+//static void set(JNIEnv *env, jboolean *arr, int idx, jboolean v) {
+//		arr[idx] = v;
+//}
+//static jboolean get(JNIEnv *env, jboolean *arr, int idx) {
+//		return arr[idx];
+//}
 import "C"
 import (
 	"fmt"
@@ -42,6 +61,27 @@ func Java_VierBitAddierer_ha(env *C.JNIEnv, clazz C.jclass, a, b C.jboolean) C.j
 func Java_VierBitAddierer_fa(env *C.JNIEnv, clazz C.jclass, a, b, ue C.jboolean) C.jobject {
 	s2, ue3 := fa(a, b, ue)
 	return C.allocAddiererAusgabe(env, s2, ue3)
+}
+
+//export Java_VierBitAddierer_vierBitAddierer
+func Java_VierBitAddierer_vierBitAddierer(env *C.JNIEnv, clazz C.jclass, a, b C.jbooleanArray) C.jbooleanArray {
+	s, ue, aArr, bArr := C.allocBoolArray(env, 5), C.allocBoolArray(env, 3), C.toGoArray(env, a), C.toGoArray(env, b)
+	var sTmp, ueTmp C.jboolean
+
+	sTmp, ueTmp = ha(C.get(env, aArr, 0), C.get(env, bArr, 0))
+	C.set(env, s, 0, sTmp)
+	C.set(env, ue, 0, ueTmp)
+	sTmp, ueTmp = fa(C.get(env, aArr, 1), C.get(env, bArr, 1), ueTmp)
+	C.set(env, s, 1, sTmp)
+	C.set(env, ue, 1, ueTmp)
+	sTmp, ueTmp = fa(C.get(env, aArr, 2), C.get(env, bArr, 2), ueTmp)
+	C.set(env, s, 2, sTmp)
+	C.set(env, ue, 2, ueTmp)
+	sTmp, ueTmp = fa(C.get(env, aArr, 3), C.get(env, bArr, 3), ueTmp)
+	C.set(env, s, 3, sTmp)
+	C.set(env, s, 4, ueTmp)
+
+	return C.toJBooleanArray(env, s, 5)
 }
 
 func nand(a, b C.jboolean) C.jboolean{

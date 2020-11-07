@@ -16,7 +16,8 @@ public class VierBitAddierer{
     public static native boolean nand(boolean a, boolean b);
     public static native boolean xor(boolean a, boolean b);
     public static native AddiererAusgabe ha(boolean a, boolean b);
-    public static native boolean[] fa(boolean a, boolean b, boolean c);
+    public static native AddiererAusgabe fa(boolean a, boolean b, boolean c);
+    public static native boolean[] vierBitAddierer(boolean[] a, boolean[] b);
 
 	public static void main(String[] args){
         System.out.println("Hello");
@@ -48,5 +49,17 @@ public class VierBitAddierer{
         System.out.println(fa(false, true, true));
         System.out.println(fa(true, false, true));
         System.out.println(fa(true, true, true));
+        System.out.println();
+        for (boolean b : vierBitAddierer(new boolean[]{true, true, false, false}, new boolean[]{true, false, false, false})) {
+            System.out.println(b);
+        }
+        System.out.println();
+        for (boolean b : vierBitAddierer(new boolean[]{false, false, false, false}, new boolean[]{false, false, false, false})) {
+            System.out.println(b);
+        }
+        System.out.println();
+        for (boolean b : vierBitAddierer(new boolean[]{true, false, false, false}, new boolean[]{true, false, false, false})) {
+            System.out.println(b);
+        }
 	}
 }
