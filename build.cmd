@@ -16,11 +16,11 @@ rd  /q /s out 2>NUL
 mkdir out
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
-javac -d out Hello.java
+javac -d out VierBitAddierer.java
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
-go build -buildmode=c-shared -o out\hello.dll .
+go build -buildmode=c-shared -o out\VierBitAddierer.dll .
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
 
-java -Xcheck:jni -Djava.library.path=out -cp out Hello
+java -Xcheck:jni -Djava.library.path=out -cp out VierBitAddierer
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%
